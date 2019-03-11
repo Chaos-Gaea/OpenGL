@@ -1,4 +1,4 @@
-![image](https://github.com/Chaos-Gaea/OpenGl/opengl.gif)   
+![image](https://github.com/Chaos-Gaea/OpenGL/blob/master/opengl.gif)   
 
 # 在activity中渲染GLSurfaceView
 
