@@ -35,7 +35,8 @@ public class AngelActivity extends Activity {
     }
 }
 
-#SceneRenderer实现GLSurfaceView.Renderer接口 进行渲染 
+# SceneRenderer实现GLSurfaceView.Renderer接口 进行渲染 
+
 
  public  class SceneRenderer implements GLSurfaceView.Renderer {
 
