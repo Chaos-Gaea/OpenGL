@@ -1,3 +1,5 @@
+![image](https://github.com/zhengwenming/WMPlayer/blob/master/WMPlayer/Resource/opengl.gif)   
+
 # 在activity中渲染GLSurfaceView
 
 
