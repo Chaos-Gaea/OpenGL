@@ -7,7 +7,7 @@ import java.io.InputStream;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 
-import javax.microedition.khronos.egl.EGLConfig;
+
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
@@ -16,7 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.MotionEvent;
 
-import lyp.com.text.R;
+
 
 
 /**
@@ -32,7 +32,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     public MyGLSurfaceView(Context context) {
         super(context);
-        mRenderer = new SceneRenderer();   //创建场景渲染器
+
+        mRenderer = new SceneRenderer(context,lightAngle);   //创建场景渲染器
         setRenderer(mRenderer);             //设置渲染器
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);//设置渲染模式为主动渲染
     }
@@ -55,71 +56,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         return true;
     }
 
-    private class SceneRenderer implements GLSurfaceView.Renderer
-    {
-        int textureId;//纹理名称ID
-        lyp cylinder;//创建圆柱体
 
-        public SceneRenderer()
-        {
-
-        }
-
-        public void onDrawFrame(GL10 gl) {
-            //清除颜色缓存
-            gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-            //设置当前矩阵为模式矩阵
-            gl.glMatrixMode(GL10.GL_MODELVIEW);
-            //设置当前矩阵为单位矩阵
-            gl.glLoadIdentity();
-
-            gl.glPushMatrix();//保护变换矩阵现场
-
-            float lx=0; //设定光源的位置
-            float ly=(float)(7*Math.cos(Math.toRadians(lightAngle)));
-            float lz=(float)(7*Math.sin(Math.toRadians(lightAngle)));
-            float[] positionParamsRed={lx,ly,lz,0};
-            gl.glLightfv(GL10.GL_LIGHT1, GL10.GL_POSITION, positionParamsRed,0);
-
-            initMaterial(gl);//初始化纹理
-            gl.glTranslatef(0, 0, -10f);//平移
-            initLight(gl);//开灯
-            cylinder.drawSelf(gl);//绘制
-            closeLight(gl);//关灯
-
-            gl.glPopMatrix();//恢复变换矩阵现场
-        }
-
-        public void onSurfaceChanged(GL10 gl, int width, int height) {
-            //设置视窗大小及位置
-            gl.glViewport(0, 0, width, height);
-            //设置当前矩阵为投影矩阵
-            gl.glMatrixMode(GL10.GL_PROJECTION);
-            //设置当前矩阵为单位矩阵
-            gl.glLoadIdentity();
-            //计算透视投影的比例
-            float ratio = (float) width / height;
-            //调用此方法计算产生透视投影矩阵
-            gl.glFrustumf(-ratio, ratio, -1, 1, 1, 100);
-        }
-
-        public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            //关闭抗抖动
-            gl.glDisable(GL10.GL_DITHER);
-            //设置特定Hint项目的模式，这里为设置为使用快速模式
-            gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT,GL10.GL_FASTEST);
-            //设置屏幕背景色黑色RGBA
-            gl.glClearColor(0,0,0,0);
-            //设置着色模型为平滑着色
-            gl.glShadeModel(GL10.GL_SMOOTH);
-            //启用深度测试
-            gl.glEnable(GL10.GL_DEPTH_TEST);
-
-            textureId=initTexture(gl, R.drawable.ston);//纹理ID
-            cylinder=new lyp(10f,2f,18f,textureId);//创建圆柱体
-
-        }
-    }
 
     //初始化白色灯
     private void initLight(GL10 gl)
